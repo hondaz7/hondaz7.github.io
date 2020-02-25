@@ -6,6 +6,7 @@
 	<title>管理后台</title>
 	<link rel="stylesheet" href="../layui/css/layui.css">
 	<style type="text/css">
+		.layui-header-icon {font-size:20px;cursor:pointer;}
 		.layui-layout-admin .layui-body {bottom:0;}
 		.layui-body {overflow:hidden;min-width:600px;}
 		.layui-body-left0 {left:0;}
@@ -17,7 +18,7 @@
 	<div class="layui-header">
 		<div class="layui-logo">XXX系统</div>
 		<ul class="layui-nav layui-layout-left">
-			<li class="layui-nav-item"><i id="left-menu-ctrl" class="layui-icon layui-icon-shrink-right" style="font-size:20px;"></i></li>
+			<li class="layui-nav-item"><i id="left-menu-ctrl" class="layui-icon layui-icon-shrink-right layui-header-icon"></i></li>
 			<li class="layui-nav-item">
 				<a href="javascript:;">其它系统</a>
 				<dl class="layui-nav-child">
@@ -28,7 +29,7 @@
 			</li>
 		</ul>
 		<ul class="layui-nav layui-layout-right">
-			<li class="layui-nav-item"><i class="layui-icon layui-icon-logout" style="font-size:20px;"></i></li>
+			<li class="layui-nav-item"><i id="logout-btn" class="layui-icon layui-icon-logout layui-header-icon"></i></li>
 		</ul>
 	</div>
 
@@ -59,15 +60,16 @@
 	</div>
 
 	<div id="layui-body" class="layui-body">
-		<iframe id="main-frame" name="main-frame" src="form.html" width="" height=""></iframe>
+		<iframe id="main-frame" name="main-frame" src="table.html" width="" height=""></iframe>
 	</div>
 </div>
 
 <script type="text/javascript" src="../layui/layui.js"></script>
 <script type="text/javascript">
-layui.use('element', function(){
+layui.use(['element', 'layer'], function(){
 	var element = layui.element,
-	$ = layui.jquery;
+		$ = layui.jquery,
+		layer = layui.layer;
 
 	// 左栏菜单显示/隐藏控制按钮
 	$('#left-menu-ctrl').click(function(){
@@ -84,7 +86,22 @@ layui.use('element', function(){
 	
 	// 左栏菜单点击事件
 	element.on('nav(leftMenu)', function(obj){
-		
+		if (obj.next().size() > 0) {
+			obj.parent().siblings().removeClass('layui-nav-itemed');
+		}
+	});
+	
+	$('#logout-btn').click(function(){
+		layer.open({
+			title: '提示',
+			content: '您确定要登出吗？',
+			icon: 3,
+			btn: ['确定', '取消'],
+			yes: function(index){
+				layer.close(index);
+				layer.msg('即将登出...');
+			}
+		});
 	});
 });
 </script>

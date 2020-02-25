@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>管理后台</title>
+	<link rel="stylesheet" href="../layui/css/layui.css">
+	<style type="text/css">
+		.row-btn i {font-size:20px;}
+		.row-btn+.row-btn {margin-left:10px;}
+	</style>
+</head>
+<body>
+	<div class="layui-fluid">
+		<div class="layui-row">
+			<div class="layui-col-sm-12">
+				<blockquote class="layui-elem-quote layui-hide">
+				<span class="layui-breadcrumb">
+					<a href="">首页</a>
+					<a href="">国际新闻</a>
+					<a href="">亚太地区</a>
+					<a><cite>正文</cite></a>
+				</span>
+				</blockquote>
+				<div class="layui-card">
+					<div class="layui-card-header">
+						<span class="layui-breadcrumb">
+							<a href="">首页</a>
+							<a href="">国际新闻</a>
+							<a href="">亚太地区</a>
+							<a><cite>正文</cite></a>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-sm-12">
+				<table class="layui-hide" id="data-table"></table>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="../layui/layui.js"></script>
+	<script type="text/javascript" src="./data/user-data.js"></script>
+	<script type="text/javascript">
+	layui.use(['element', 'layer', 'table', 'form', 'laytpl'], function(){
+		var table = layui.table;
+
+		table.render({
+			elem: '#data-table',
+            height: 'full-80',
+			// url和data选一个
+			//url: '/demo',
+			data: users,
+			cols: [[
+				{field:'id', fixed:'left', title:'ID', width:80, unresize:true},
+				{field:'name', fixed:'left', title:'用户名'},
+				{field:'username', title:'账号'},
+				{field:'type', title:'类型', templet: function(d){return d.type == 1 ? "超级管理员" : "普通用户";}},
+				{field:'lastLogin', title:'上次登录时间'},
+				{field:'lock', title:'状态', templet:'#lockTpl', width:100, unresize:true},
+				{fixed:'right', title:'操作', width:85, templet:'#rowTpl', unresize:true}
+			]],
+			//defaultToolbar: [], // 不显示右边的工具栏
+			toolbar: 'default', // 左边工具栏使用内置的
+			page: true,
+			limit: 20
+		});
+	});
+	</script>
+
+	<!--模板放最后-->
+	<script type="text/html" id="lockTpl">
+		<input type="checkbox" lay-skin="switch" name="lock" value="{{d.id}}" lay-text="锁定|正常" {{d.lock == 1 ? 'checked' : ''}}>
+	</script>
+	<script type="text/html" id="rowTpl">
+		<a href="javascript:;" class="row-btn" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></a>
+		<a href="javascript:;" class="row-btn" lay-event="delete"><i class="layui-icon layui-icon-delete"></i></a>
+	</script>
+	<script type="text/html" id="toolbarTpl">
+		<a href="javascript:;" class="layui-btn layui-btn-primary" lay-event="add">新增</a>
+	</script>
+</body>
+</html>
